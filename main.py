@@ -1,4 +1,6 @@
+import numpy
 array_snails_x = []
+
 array_snails_y = []
 
 min_time=100000000000001
@@ -79,7 +81,7 @@ def merge(lst1x, lst2x, lst1y, lst2y):
             lsty.append(lst1y[iy])
             ix += 1
             iy += 1
-    print (min_time)
+   # print (min_time)
     return lstx, lsty
 def menu():
     print('\nВыберите пункт из меню:\n'
@@ -113,18 +115,28 @@ def main():
             elif c == 1:
                 print('Никогда, у вас всего 1 улитка, вы можете добавить их при помощи пункта 1')
             else:
-                x = array_snails_x[0]
-                y = array_snails_y[0]
-                array_snails_x.pop(0)
-                array_snails_y.pop(0)
+                print(array_snails_x)
+                print(array_snails_y)
+                array_index = numpy.argsort(array_snails_x)
+                array_snails_x_sorted = [array_snails_x[i] for i in array_index]
+                array_snails_y_sorted = [array_snails_y[i] for i in array_index]
 
-                array_snails_x.sort()
-                array_snails_y.sort()
-                mergeSort(array_snails_x, array_snails_y)
+                x = array_snails_x_sorted[0]
+                y = array_snails_y_sorted[0]
 
-                array_snails_x.insert(0, x)
-                array_snails_y.insert(0, y)
-                mergeSort(array_snails_x, array_snails_y)
+                array_snails_x_sorted.pop(0)
+                array_snails_y_sorted.pop(0)
+                print(array_snails_x_sorted)
+                print(array_snails_y_sorted)
+
+
+                mergeSort(array_snails_x_sorted, array_snails_y_sorted)
+
+                array_snails_x_sorted.insert(0, x)
+                array_snails_y_sorted.insert(0, y)
+                print(array_snails_x_sorted)
+                print(array_snails_y_sorted)
+                mergeSort(array_snails_x_sorted, array_snails_y_sorted)
 
                 print('Первая пара образуется через ', round(min_time / 2, 3), ' секунд(ы)')
                 return 0
