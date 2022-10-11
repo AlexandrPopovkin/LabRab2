@@ -22,7 +22,7 @@ def mergeSort(array_snails_x, array_snails_y):
     list_second_part_x = (array_snails_x[middle_x + 1:])
     list_second_part_y = (array_snails_y[middle_y + 1:])
     mergeSort(list_second_part_x, list_second_part_y)
-    print(list_first_part_x, list_second_part_x,list_first_part_y, list_second_part_y )
+    #print(list_first_part_x, list_second_part_x,list_first_part_y, list_second_part_y )
     time = merge(list_first_part_x, list_second_part_x, list_first_part_y, list_second_part_y)
 
     return time
