@@ -85,7 +85,7 @@ def merge(lst1x, lst2x, lst1y, lst2y):
             lsty.append(lst1y[iy])
             ix += 1
             iy += 1
-    print (min_time)
+    #print (min_time)
     return lstx, lsty
 def menu():
     print('\nВыберите пункт из меню:\n'
@@ -130,16 +130,16 @@ def main():
 
                 array_snails_x_sorted.pop(0)
                 array_snails_y_sorted.pop(0)
-                print(array_snails_x_sorted)
-                print(array_snails_y_sorted)
+                #print(array_snails_x_sorted)
+                #print(array_snails_y_sorted)
 
 
                 mergeSort(array_snails_x_sorted, array_snails_y_sorted)
 
                 array_snails_x_sorted.insert(0, x)
                 array_snails_y_sorted.insert(0, y)
-                print(array_snails_x_sorted)
-                print(array_snails_y_sorted)
+                #print(array_snails_x_sorted)
+                #print(array_snails_y_sorted)
                 mergeSort(array_snails_x_sorted, array_snails_y_sorted)
 
                 array_snails_x_sorted.append(10000000000000000)
