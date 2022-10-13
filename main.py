@@ -1,14 +1,18 @@
-import numpy
+mport numpy
 array_snails_x = []
 
 array_snails_y = []
 
 min_time=100000000000001
 def adding():
-    x_snail = input('Введите x улитки: \n')
-    y_snail = input('Введите y улитки: \n')
-    array_snails_x.append(int(x_snail))
-    array_snails_y.append(int(y_snail))
+    x_snail = int(input('Введите x улитки: \n'))
+    y_snail = int(input('Введите y улитки: \n'))
+    if (x_snail > 100000000000) or (y_snail > 100000000000):
+
+        print('Введено значение больше максимума')
+    else:
+        array_snails_x.append(int(x_snail))
+        array_snails_y.append(int(y_snail))
 
 
 def mergeSort(array_snails_x, array_snails_y):
@@ -81,7 +85,7 @@ def merge(lst1x, lst2x, lst1y, lst2y):
             lsty.append(lst1y[iy])
             ix += 1
             iy += 1
-   # print (min_time)
+    print (min_time)
     return lstx, lsty
 def menu():
     print('\nВыберите пункт из меню:\n'
@@ -115,8 +119,8 @@ def main():
             elif c == 1:
                 print('Никогда, у вас всего 1 улитка, вы можете добавить их при помощи пункта 1')
             else:
-                print(array_snails_x)
-                print(array_snails_y)
+                #print(array_snails_x)
+                #print(array_snails_y)
                 array_index = numpy.argsort(array_snails_x)
                 array_snails_x_sorted = [array_snails_x[i] for i in array_index]
                 array_snails_y_sorted = [array_snails_y[i] for i in array_index]
@@ -136,6 +140,10 @@ def main():
                 array_snails_y_sorted.insert(0, y)
                 print(array_snails_x_sorted)
                 print(array_snails_y_sorted)
+                mergeSort(array_snails_x_sorted, array_snails_y_sorted)
+
+                array_snails_x_sorted.append(10000000000000000)
+                array_snails_y_sorted.append(10000000000000000)
                 mergeSort(array_snails_x_sorted, array_snails_y_sorted)
 
                 print('Первая пара образуется через ', round(min_time / 2, 3), ' секунд(ы)')
