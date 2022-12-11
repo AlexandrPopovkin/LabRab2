@@ -1,9 +1,55 @@
-mport numpy
-array_snails_x = []
+array_snails = []
 
-array_snails_y = []
+import math
 
-min_time=100000000000001
+def time(a, b):
+    return (math.sqrt(((a[0] - b[0]) ** 2) + ((a[1] - b[1]) ** 2))/2)
+def search(a, p, q, m):
+    if len(a) == 2:
+        dist = time(a[0], a[1])
+        if dist < m:
+            p, q = a[0], a[1]
+            m = dist
+    else:
+        for x in range(0, len(a) - 1):
+            for y in range(x + 1, len(a)):
+                if m > time(a[x], a[y]):
+                    m = time(a[x], a[y])
+                    p, q = a[x], a[y]
+    return p, q, m
+
+def pair(a, p, q, m):
+    l = len(a)
+    if l <= (3): return (search(a, p, q, m))
+    midl = l // 2
+    midx = a[midl][0]
+    Left_half = a[:midl]
+    Right_half = a[midl:]
+
+    p, q, m = pair(Left_half, p, q, m)
+    p, q, m = pair(Right_half, p, q, m)
+    p, q, m = dist(a, midx, p, q, m)
+
+    return (p, q, m)
+
+
+def dist(a, xc, p, q, m):
+    strip = []
+    right, left = xc + int(m), xc - int(m)
+    for x in a:
+        if x[0] > right:
+            break
+        elif left <= x[0] <= right:
+            strip.append(x)
+    strip.sort(key=lambda x: x[1])
+    for x in range(0, len(strip)):
+        for y in range(x + 1, min((x + 7), len(strip))):
+            dist = time(strip[x], strip[y])
+            if dist < m:
+                p, q = strip[x], strip[y]
+                m = dist
+    return (p, q, m)
+
 def adding():
     x_snail = int(input('Введите x улитки: \n'))
     y_snail = int(input('Введите y улитки: \n'))
@@ -11,82 +57,8 @@ def adding():
 
         print('Введено значение больше максимума')
     else:
-        array_snails_x.append(int(x_snail))
-        array_snails_y.append(int(y_snail))
+        array_snails.append([int(x_snail),int(y_snail)])
 
-
-def mergeSort(array_snails_x, array_snails_y):
-    if len(array_snails_x) == 1 and len(array_snails_y) == 1:
-        return array_snails_x, array_snails_y
-    middle_x = (len(array_snails_x) - 1) // 2
-    middle_y = (len(array_snails_y) - 1) // 2
-
-    list_first_part_x = (array_snails_x[:middle_x + 1])
-    list_first_part_y = (array_snails_y[:middle_y + 1])
-
-    mergeSort(list_first_part_x, list_first_part_y)
-    list_second_part_x = (array_snails_x[middle_x + 1:])
-    list_second_part_y = (array_snails_y[middle_y + 1:])
-    mergeSort(list_second_part_x, list_second_part_y)
-    #print(list_first_part_x, list_second_part_x,list_first_part_y, list_second_part_y )
-    time = merge(list_first_part_x, list_second_part_x, list_first_part_y, list_second_part_y)
-
-    return time
-
-
-def merge(lst1x, lst2x, lst1y, lst2y):
-    global min_time
-    lstx = []
-    lsty = []
-    ix = 0
-    jx = 0
-    iy = 0
-    jy = 0
-    while ((ix <= len(lst1x) - 1) and (jx <= len(lst2x) - 1) and (iy <= len(lst1y) - 1) and (jy <= len(lst2y) - 1)):
-        if (lst1x[ix] != lst2x[jx]) and (lst1y[iy] != lst2y[jy]):
-            if ((lst1x[ix] - lst2x[jx]) ** 2 + (lst1y[iy] - lst2y[jy]) ** 2) < min_time:
-                lstx.append(lst1x[ix])
-                lsty.append(lst1y[iy])
-                min_time = ((((lst1x[ix] - lst2x[jx]) ** 2 + (lst1y[iy] - lst2y[jy]) ** 2)) ** 0.5)
-
-                ix += 1
-                iy += 1
-
-            else:
-                lstx.append(lst2x[jx])
-                lsty.append(lst2y[jy])
-
-                jx += 1
-                jy += 1
-
-        else:
-            if ((abs(lst1x[ix] - lst2x[jx])) + (abs(lst1y[iy] - lst2y[jy]))) < min_time:
-                lstx.append(lst1x[ix])
-                lsty.append(lst1y[iy])
-                min_time = ((abs(lst1x[ix] - lst2x[jx])) + (abs(lst1y[iy] - lst2y[jy])))
-                ix += 1
-                iy += 1
-            else:
-                lstx.append(lst2x[jx])
-                lsty.append(lst2y[jy])
-
-                jx += 1
-                jy += 1
-
-    if ((ix > len(lst1x) - 1) and (iy > len(lst1y) - 1)):
-        while ((jx <= len(lst2x) - 1) and (jy <= len(lst2y) - 1)):
-            lstx.append(lst2x[jx])
-            lsty.append(lst2y[jy])
-            jx += 1
-            jy += 1
-    else:
-        while ((ix <= len(lst1x) - 1) and (iy <= len(lst1y) - 1)):
-            lstx.append(lst1x[ix])
-            lsty.append(lst1y[iy])
-            ix += 1
-            iy += 1
-    #print (min_time)
-    return lstx, lsty
 def menu():
     print('\nВыберите пункт из меню:\n'
           '--------------------------------\n'
@@ -119,50 +91,28 @@ def main():
             elif c == 1:
                 print('Никогда, у вас всего 1 улитка, вы можете добавить их при помощи пункта 1')
             else:
-                #print(array_snails_x)
-                #print(array_snails_y)
-                array_index = numpy.argsort(array_snails_x)
-                array_snails_x_sorted = [array_snails_x[i] for i in array_index]
-                array_snails_y_sorted = [array_snails_y[i] for i in array_index]
+                array_snails.sort()
 
-                x = array_snails_x_sorted[0]
-                y = array_snails_y_sorted[0]
-
-                array_snails_x_sorted.pop(0)
-                array_snails_y_sorted.pop(0)
-                #print(array_snails_x_sorted)
-                #print(array_snails_y_sorted)
+                arr1, arr2 = array_snails[0], array_snails[1]
+                min_time = time(array_snails[0], array_snails[1])
+                pt1, pt2, distance = pair(array_snails, arr1, arr2, min_time)
 
 
-                mergeSort(array_snails_x_sorted, array_snails_y_sorted)
-
-                array_snails_x_sorted.insert(0, x)
-                array_snails_y_sorted.insert(0, y)
-                #print(array_snails_x_sorted)
-                #print(array_snails_y_sorted)
-                mergeSort(array_snails_x_sorted, array_snails_y_sorted)
-
-                array_snails_x_sorted.append(10000000000000000)
-                array_snails_y_sorted.append(10000000000000000)
-                mergeSort(array_snails_x_sorted, array_snails_y_sorted)
-
-                print('Первая пара образуется через ', round(min_time / 2, 3), ' секунд(ы)')
+                print('Первая пара образуется через ', round(distance, 3), ' секунд(ы)')
                 return 0
         elif ind == 3:
             if c == 0:
                 print('Улиток здесь еще нет')
             else:
                 for i in range(c):
-                    print('Улитка', i+1, ' ', array_snails_x[i], ' : ' , array_snails_y[i])
+                    print('Улитка', i+1, ' ', array_snails[i])
 
 
         elif ind == 4:
-            array_snails_x.clear()
-            array_snails_y.clear()
+            array_snails.clear()
             c = 0
 
         else:
             print('Выберите значение из меню\n')
-
 
 main()
